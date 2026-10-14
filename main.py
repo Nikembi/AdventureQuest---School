@@ -21,123 +21,131 @@ print("=" * 80)
 menu_choice = input("Please select an option: ")
 
 
-print("=" * 80)
-print(f"{'Adventure Quest':^80}")
-print("=" * 80)
-print("Create your Character!")
-print("")
+# ----- Week 5: route the menu choice -----
+
+if menu_choice == "1":
+
+    print("=" * 80)
+    print(f"{'Adventure Quest':^80}")
+    print("=" * 80)
+    print("Create your Character!")
+    print("")
 
 
-health = 100
-strength = 10
-level = 1
-gold = 0
-magic = 0
+    health = 100
+    strength = 10
+    level = 1
+    gold = 0
+    magic = 0
 
-inventory = ["Food", "Water"]
-
-
-name = input("Enter your character's name: ")
-bonus = int(input("Choose a starting strength bonus (0-5): "))
+    inventory = ["Food", "Water"]
 
 
-strength = strength + bonus
-attack_power = strength * 2 + level
-
-print(f"Character created! Name: {name}, Health: {health}, Strength: {strength}")
-print(f"Attack Power: {attack_power}")
-print("")
+    name = input("Enter your character's name: ")
+    bonus = int(input("Choose a starting strength bonus (0-5): "))
 
 
-# ----- Week 3: the game world as a 2-D list -----
+    strength = strength + bonus
+    attack_power = strength * 2 + level
 
-world = [
-    ["Uncharted Territory", "Haunted Forest", "Mystical City", "Haunted Forest", "Uncharted Territory"],
-    ["Abandoned Village", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Forest Camp"],
-    ["Mystical City", "Ancient Ruins", "Enchanted Castle", "Ancient Ruins", "Mystical City"],
-    ["Forest Camp", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Abandoned Village"],
-    ["Uncharted Territory", "Haunted Forest", "Mystical City", "Abandoned Village", "Uncharted Territory"],
-]
-row = 0
-col = 0
-
-location_count = len(world) * len(world[0])
-
-print("Initializing game world...")
-print("Row 0:", world[0])
-print("Row 1:", world[1])
-print("Row 2:", world[2])
-print("Row 3:", world[3])
-print("Row 4:", world[4])
-print(f"Game world ready. {location_count} locations loaded.")
-print("")
+    print(f"Character created! Name: {name}, Health: {health}, Strength: {strength}")
+    print(f"Attack Power: {attack_power}")
+    print("")
 
 
-location = world[row][col]
+    # ----- Week 3: the game world as a 2-D list -----
 
-location_line = f"Location: {location} ({row}, {col})"
+    world = [
+        ["Uncharted Territory", "Haunted Forest", "Mystical City", "Haunted Forest", "Uncharted Territory"],
+        ["Abandoned Village", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Forest Camp"],
+        ["Mystical City", "Ancient Ruins", "Enchanted Castle", "Ancient Ruins", "Mystical City"],
+        ["Forest Camp", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Abandoned Village"],
+        ["Uncharted Territory", "Haunted Forest", "Mystical City", "Abandoned Village", "Uncharted Territory"],
+    ]
+    row = 0
+    col = 0
 
-stat_row = f"Name: {name}".ljust(22) + f"Health: {health}".ljust(24) + f"Strength: {strength}"
-info_row = f"Level: {level}".ljust(22) + f"Gold: {gold}".ljust(22) + f"Inventory: {inventory[0]}, {inventory[1]}"
+    location_count = len(world) * len(world[0])
 
-print("=" * 80)
-print(f"{'Adventure Quest':^80}")
-print(f"{location_line:^80}")
-print("=" * 80)
-print(("| " + stat_row).ljust(80) + "|")
-print(("| " + info_row).ljust(80) + "|")
-print("=" * 80)
-print("| Available Commands:".ljust(80) + "|")
-print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
-print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
-print("| - Inventory: view inventory (i)".ljust(80) + "|")
-print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
-print("=" * 80)
-
-
-print(f"Welcome, {name}! You stand at the edge of the Uncharted Territory, where danger and opportunity lurk at every turn. Your journey to the Enchanted Castle begins here. To the east lies an Abandoned Village shrouded in mystery, and to the south, a Haunted Forest beckons with eerie silence.")
-print("")
-
-command = input("Enter your command: ")
+    print("Initializing game world...")
+    print("Row 0:", world[0])
+    print("Row 1:", world[1])
+    print("Row 2:", world[2])
+    print("Row 3:", world[3])
+    print("Row 4:", world[4])
+    print(f"Game world ready. {location_count} locations loaded.")
+    print("")
 
 
-# ----- Week 4: one boundary-checked move -----
+    # ----- Week 5: the game loop, controlled by the game_running flag -----
 
-if command == "n":
-    if row > 0:
-        row = row - 1
-    else:
-        print("You cannot move further north.")
-elif command == "s":
-    if row < 4:
-        row = row + 1
-    else:
-        print("You cannot move further south.")
-elif command == "e":
-    if col < 4:
-        col = col + 1
-    else:
-        print("You cannot move further east.")
-elif command == "w":
-    if col > 0:
-        col = col - 1
-    else:
-        print("You cannot move further west.")
+    game_running = True
+
+    while game_running:
+
+        location = world[row][col]
+
+        location_line = f"Location: {location} ({row}, {col})"
+
+        stat_row = f"Name: {name}".ljust(22) + f"Health: {health}".ljust(24) + f"Strength: {strength}"
+        info_row = f"Level: {level}".ljust(22) + f"Gold: {gold}".ljust(22) + f"Inventory: {inventory[0]}, {inventory[1]}"
+
+        print("=" * 80)
+        print(f"{'Adventure Quest':^80}")
+        print(f"{location_line:^80}")
+        print("=" * 80)
+        print(("| " + stat_row).ljust(80) + "|")
+        print(("| " + info_row).ljust(80) + "|")
+        print("=" * 80)
+        print("| Available Commands:".ljust(80) + "|")
+        print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
+        print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
+        print("| - Inventory: view inventory (i)".ljust(80) + "|")
+        print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
+        print("=" * 80)
+
+
+        if row == 0 and col == 0:
+            print(f"Welcome, {name}! You stand at the edge of the Uncharted Territory, where danger and opportunity lurk at every turn. Your journey to the Enchanted Castle begins here. To the east lies an Abandoned Village shrouded in mystery, and to the south, a Haunted Forest beckons with eerie silence.")
+        else:
+            print("Descriptions coming soon.")
+
+        print("")
+
+        command = input("Enter your command: ")
+
+
+        # ----- Week 4: one boundary-checked move -----
+
+        if command == "q":
+            game_running = False
+            print("Thank you for playing Adventure Quest!")
+        elif command == "n":
+            if row > 0:
+                row = row - 1
+            else:
+                print("You cannot move further north.")
+        elif command == "s":
+            if row < 4:
+                row = row + 1
+            else:
+                print("You cannot move further south.")
+        elif command == "e":
+            if col < 4:
+                col = col + 1
+            else:
+                print("You cannot move further east.")
+        elif command == "w":
+            if col > 0:
+                col = col - 1
+            else:
+                print("You cannot move further west.")
+        else:
+            print("Invalid command.")
+
+elif menu_choice == "2":
+    print("Feature Under Construction.")
+elif menu_choice == "3":
+    print("Thank you for playing Adventure Quest!")
 else:
-    print("Invalid command")
-
-location = world[row][col]
-
-location_line = f"Location: {location} ({row}, {col})"
-
-print(location_line)
-print("=" * 80)
-print(("| " + stat_row).ljust(80) + "|")
-print(("| " + info_row).ljust(80) + "|")
-print("=" * 80)
-print("| Available Commands:".ljust(80) + "|")
-print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
-print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
-print("| - Inventory: view inventory (i)".ljust(80) + "|")
-print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
-print("=" * 80)
+    print("Invalid menu option.")
