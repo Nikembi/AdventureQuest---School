@@ -99,3 +99,45 @@ print(f"Welcome, {name}! You stand at the edge of the Uncharted Territory, where
 print("")
 
 command = input("Enter your command: ")
+
+
+# ----- Week 4: one boundary-checked move -----
+
+if command == "n":
+    if row > 0:
+        row = row - 1
+    else:
+        print("You cannot move further north.")
+elif command == "s":
+    if row < 4:
+        row = row + 1
+    else:
+        print("You cannot move further south.")
+elif command == "e":
+    if col < 4:
+        col = col + 1
+    else:
+        print("You cannot move further east.")
+elif command == "w":
+    if col > 0:
+        col = col - 1
+    else:
+        print("You cannot move further west.")
+else:
+    print("Invalid command")
+
+location = world[row][col]
+
+location_line = f"Location: {location} ({row}, {col})"
+
+print(location_line)
+print("=" * 80)
+print(("| " + stat_row).ljust(80) + "|")
+print(("| " + info_row).ljust(80) + "|")
+print("=" * 80)
+print("| Available Commands:".ljust(80) + "|")
+print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
+print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
+print("| - Inventory: view inventory (i)".ljust(80) + "|")
+print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
+print("=" * 80)
