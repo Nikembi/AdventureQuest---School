@@ -1,7 +1,46 @@
+import locations
+import character
 
-print("=" * 80)
-print(f"{'Adventure Quest':^80}")
-print("=" * 80)
+
+XP_PER_MOVE = 50
+
+
+def print_title():
+    print("=" * 80)
+    print(f"{'Adventure Quest':^80}")
+    print("=" * 80)
+
+
+def draw_hud(name, row, col, level, strength):
+    location_line = f"Location: {locations.location_name(row, col)} ({row}, {col})"
+
+    stat_row = f"Name: {name}".ljust(22) + f"Health: {health}".ljust(24) + f"Strength: {strength}"
+    info_row = f"Level: {level}".ljust(22) + f"Gold: {gold}".ljust(22) + f"Inventory: {', '.join(inventory)}"
+
+    print("=" * 80)
+    print(f"{'Adventure Quest':^80}")
+    print(f"{location_line:^80}")
+    print("=" * 80)
+    print(("| " + stat_row).ljust(80) + "|")
+    print(("| " + info_row).ljust(80) + "|")
+    print("=" * 80)
+    print("| Available Commands:".ljust(80) + "|")
+    print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
+    print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
+    print("| - Inventory: view inventory (i)".ljust(80) + "|")
+    print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
+    print("=" * 80)
+
+
+def show_inventory(inventory):
+    print("=" * 80)
+    print("| Inventory:".ljust(80) + "|")
+    for item in inventory:
+        print(("| - " + item).ljust(80) + "|")
+    print("=" * 80)
+
+
+print_title()
 print("Welcome to Adventure Quest!")
 print("")
 print("In this mystical land, you will embark on a thrilling journey to find the Enchanted")
@@ -25,9 +64,7 @@ menu_choice = input("Please select an option: ")
 
 if menu_choice == "1":
 
-    print("=" * 80)
-    print(f"{'Adventure Quest':^80}")
-    print("=" * 80)
+    print_title()
     print("Create your Character!")
     print("")
 
@@ -37,6 +74,7 @@ if menu_choice == "1":
     level = 1
     gold = 0
     magic = 0
+    xp = 0
 
     inventory = ["Food", "Water"]
 
@@ -53,26 +91,17 @@ if menu_choice == "1":
     print("")
 
 
-    # ----- Week 3: the game world as a 2-D list -----
-
-    world = [
-        ["Uncharted Territory", "Haunted Forest", "Mystical City", "Haunted Forest", "Uncharted Territory"],
-        ["Abandoned Village", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Forest Camp"],
-        ["Mystical City", "Ancient Ruins", "Enchanted Castle", "Ancient Ruins", "Mystical City"],
-        ["Forest Camp", "Uncharted Territory", "Magical Spring", "Uncharted Territory", "Abandoned Village"],
-        ["Uncharted Territory", "Haunted Forest", "Mystical City", "Abandoned Village", "Uncharted Territory"],
-    ]
     row = 0
     col = 0
 
-    location_count = len(world) * len(world[0])
+    location_count = len(locations.world) * len(locations.world[0])
 
     print("Initializing game world...")
-    print("Row 0:", world[0])
-    print("Row 1:", world[1])
-    print("Row 2:", world[2])
-    print("Row 3:", world[3])
-    print("Row 4:", world[4])
+    print("Row 0:", locations.world[0])
+    print("Row 1:", locations.world[1])
+    print("Row 2:", locations.world[2])
+    print("Row 3:", locations.world[3])
+    print("Row 4:", locations.world[4])
     print(f"Game world ready. {location_count} locations loaded.")
     print("")
 
@@ -83,26 +112,7 @@ if menu_choice == "1":
 
     while game_running:
 
-        location = world[row][col]
-
-        location_line = f"Location: {location} ({row}, {col})"
-
-        stat_row = f"Name: {name}".ljust(22) + f"Health: {health}".ljust(24) + f"Strength: {strength}"
-        info_row = f"Level: {level}".ljust(22) + f"Gold: {gold}".ljust(22) + f"Inventory: {inventory[0]}, {inventory[1]}"
-
-        print("=" * 80)
-        print(f"{'Adventure Quest':^80}")
-        print(f"{location_line:^80}")
-        print("=" * 80)
-        print(("| " + stat_row).ljust(80) + "|")
-        print(("| " + info_row).ljust(80) + "|")
-        print("=" * 80)
-        print("| Available Commands:".ljust(80) + "|")
-        print("| - Move: north (n), south (s), east (e), west (w)".ljust(80) + "|")
-        print("| - Actions: pick up (p), drop (d), use (u), talk (t)".ljust(80) + "|")
-        print("| - Inventory: view inventory (i)".ljust(80) + "|")
-        print("| - Save Game (save), Load Game (load), Quit (q)".ljust(80) + "|")
-        print("=" * 80)
+        draw_hud(name, row, col, level, strength)
 
 
         if row == 0 and col == 0:
@@ -115,31 +125,20 @@ if menu_choice == "1":
         command = input("Enter your command: ")
 
 
-        # ----- Week 4: one boundary-checked move -----
+        # ----- Week 7: move through the module, then award XP -----
 
         if command == "q":
             game_running = False
             print("Thank you for playing Adventure Quest!")
-        elif command == "n":
-            if row > 0:
-                row = row - 1
-            else:
-                print("You cannot move further north.")
-        elif command == "s":
-            if row < 4:
-                row = row + 1
-            else:
-                print("You cannot move further south.")
-        elif command == "e":
-            if col < 4:
-                col = col + 1
-            else:
-                print("You cannot move further east.")
-        elif command == "w":
-            if col > 0:
-                col = col - 1
-            else:
-                print("You cannot move further west.")
+        elif command == "i":
+            show_inventory(inventory)
+        elif command == "n" or command == "s" or command == "e" or command == "w":
+            new_row, new_col = locations.try_move(command, row, col)
+            if new_row != row or new_col != col:
+                row = new_row
+                col = new_col
+                xp = xp + XP_PER_MOVE
+                level, strength = character.check_level_up(xp, level, strength)
         else:
             print("Invalid command.")
 
